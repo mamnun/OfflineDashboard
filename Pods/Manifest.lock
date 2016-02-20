@@ -1,0 +1,16 @@
+PODS:
+  - Alamofire (3.2.0)
+  - FileKit (2.0.0)
+  - Zip (0.2.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - FileKit
+  - Zip
+
+SPEC CHECKSUMS:
+  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
+  FileKit: fd360f82f62a1f70dd2ccdbe0950d3a6d1e25d1d
+  Zip: 4ab1ce7c9d4afc2d04d79fbbc4d774df00e78321
+
+COCOAPODS: 0.39.0
