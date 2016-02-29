@@ -73,14 +73,14 @@ class ViewController: UIViewController {
             }
             .response { (request:NSURLRequest?, response:NSHTTPURLResponse?, data:NSData?, error:NSError?) -> Void in
                 hud.hide(true)
-                self.unzipURL(localPath)
+                self.unzipURL(localPath, directory: String(url.absoluteString.lowercaseString.hash)) //this hash will guarantee a single url we always get same folder name
         }
 
     }
 
-    private func unzipURL(localPath:NSURL?) {
+    private func unzipURL(localPath:NSURL?, directory:String) {
         guard let localPath = localPath, directoryURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first else { return }
-        let destination = directoryURL.URLByAppendingPathComponent(String(localPath.absoluteString.lowercaseString.hash), isDirectory: true)// + "/" + String(localPath.absoluteString.lowercaseString.hash)
+        let destination = directoryURL.URLByAppendingPathComponent(directory, isDirectory: true)
 
         do {
             // lets create the folder
