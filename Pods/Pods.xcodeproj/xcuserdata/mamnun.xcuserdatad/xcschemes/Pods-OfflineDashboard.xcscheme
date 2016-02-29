@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '2A91E01998CC66BCBD8745CB'
+               BlueprintIdentifier = '8223E2358708DCDE42CD39EB'
                BlueprintName = 'Pods-OfflineDashboard'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods_OfflineDashboard.framework'>
