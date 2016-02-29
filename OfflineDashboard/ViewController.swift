@@ -20,11 +20,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func loadTapped(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Enter URL", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addTextFieldWithConfigurationHandler(nil)
@@ -33,27 +28,19 @@ class ViewController: UIViewController {
                 where self.validateURL(urlString) else {
                 return
             }
-
             self.loadURL(url)
         }
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive) { (action:UIAlertAction) -> Void in
-            alertController.dismissViewControllerAnimated(true, completion: nil)
-        }
-
-        alertController.addAction(cancelAction)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: nil))
         alertController.addAction(okAction)
 
         self.presentViewController(alertController, animated: true, completion: nil)
     }
 
     private func loadURL(url:NSURL) {
-//        let debugPath = "file:///Users/mamnun/Library/Developer/CoreSimulator/Devices/654C7542-563B-4449-8377-4A92B954877C/data/Containers/Data/Application/59556971-E333-4368-8D4E-5B00DA6F5272/Documents/new.zip"
-//        unzipURL(NSURL(string: debugPath))
-//        return
-
         let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.mode = MBProgressHUDMode.AnnularDeterminate
+        hud.labelText = "Downloading"
 
         var localPath: NSURL?
         Alamofire.download(.GET, url, destination: { (downloadedURL:NSURL, response:NSHTTPURLResponse) -> NSURL in
@@ -62,16 +49,13 @@ class ViewController: UIViewController {
 
             localPath = directoryURL.URLByAppendingPathComponent(pathComponent!)
             return localPath!
-        })
-            .progress { bytesRead, totalBytesRead, totalBytesExpectedToRead in
-
+        }).progress( { bytesRead, totalBytesRead, totalBytesExpectedToRead in
                 // This closure is NOT called on the main queue for performance
                 // reasons. To update your ui, dispatch to the main queue.
                 dispatch_async(dispatch_get_main_queue()) {
                     hud.progress = Float(totalBytesRead) / Float(totalBytesExpectedToRead)
                 }
-            }
-            .response { (request:NSURLRequest?, response:NSHTTPURLResponse?, data:NSData?, error:NSError?) -> Void in
+        }).response { (request:NSURLRequest?, response:NSHTTPURLResponse?, data:NSData?, error:NSError?) -> Void in
                 hud.hide(true)
                 self.unzipURL(localPath, directory: String(url.absoluteString.lowercaseString.hash)) //this hash will guarantee a single url we always get same folder name
         }
@@ -83,29 +67,22 @@ class ViewController: UIViewController {
         let destination = directoryURL.URLByAppendingPathComponent(directory, isDirectory: true)
 
         do {
-            // lets create the folder
+            // lets create the folder if it doesnt exist
             try NSFileManager.defaultManager().createDirectoryAtPath(destination.path!, withIntermediateDirectories: true, attributes: nil)
             //now unzip
             if SSZipArchive.unzipFileAtPath(localPath.path, toDestination: destination.path) {
                 // now the hardest path... recursively enumerate files until we find index.html file
                 let enumerator = NSFileManager.defaultManager().enumeratorAtURL(destination, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles, errorHandler: nil)
-                while let file =  enumerator?.nextObject() {
-                    debugPrint(file)
-                    if let fileURL = file as? NSURL where fileURL.absoluteString.hasSuffix("index.html") {
+                while let fileURL =  enumerator?.nextObject() as? NSURL {
+                    if fileURL.absoluteString.hasSuffix("index.html") {
                         self.webView.loadRequest(NSURLRequest(URL: fileURL))
                         return
                     }
                 }
-
             }
         } catch let error as NSError {
-            //NOOP
             debugPrint(error)
         }
-
-
-
-
     }
 
     private func validateURL(urlString:String) -> Bool {
