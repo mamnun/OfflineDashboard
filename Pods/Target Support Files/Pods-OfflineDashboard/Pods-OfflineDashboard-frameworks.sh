@@ -85,13 +85,11 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-OfflineDashboard/Alamofire.framework"
-  install_framework "Pods-OfflineDashboard/FileKit.framework"
   install_framework "Pods-OfflineDashboard/MBProgressHUD.framework"
   install_framework "Pods-OfflineDashboard/SSZipArchive.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-OfflineDashboard/Alamofire.framework"
-  install_framework "Pods-OfflineDashboard/FileKit.framework"
   install_framework "Pods-OfflineDashboard/MBProgressHUD.framework"
   install_framework "Pods-OfflineDashboard/SSZipArchive.framework"
 fi

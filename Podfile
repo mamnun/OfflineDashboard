@@ -3,7 +3,6 @@ use_frameworks!
 
 target 'OfflineDashboard' do
 	pod 'Alamofire'
-	pod 'FileKit'
 	pod 'SSZipArchive'
 	pod 'MBProgressHUD'
 end

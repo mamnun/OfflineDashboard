@@ -1,18 +1,15 @@
 PODS:
   - Alamofire (3.2.0)
-  - FileKit (2.0.0)
   - MBProgressHUD (0.9.2)
   - SSZipArchive (1.1)
 
 DEPENDENCIES:
   - Alamofire
-  - FileKit
   - MBProgressHUD
   - SSZipArchive
 
 SPEC CHECKSUMS:
   Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
-  FileKit: fd360f82f62a1f70dd2ccdbe0950d3a6d1e25d1d
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
 
